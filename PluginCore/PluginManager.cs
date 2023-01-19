@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace PluginCore
@@ -19,17 +21,32 @@ namespace PluginCore
             }
             var jsonPath = System.IO.Path.Combine(dir, "plugins.json");
             var str = System.IO.File.ReadAllText(jsonPath);
-            var json = System.Text.Json.JsonSerializer.Deserialize<PluginDescFile>(str);
+            var options = new System.Text.Json.JsonSerializerOptions
+            {
+                Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
+            };
+            var json = System.Text.Json.JsonSerializer.Deserialize<PluginDescFile>(str, options);
             if (json == null)
             {
                 Console.WriteLine("plugin json failed");
                 return;
             }
             var plugins = json.Plugins;
+            if (plugins == null)
+            {
+                Console.WriteLine("no plugin found");
+                return;
+            }
             foreach (var plugin in plugins)
             {
-                var pluginPath = Path.Combine(dir, plugin.Name, $"{plugin.Name}.dll");
-                var handle = Activator.CreateInstance(pluginPath, plugin.Type);
+                //var pluginPath = Path.Combine(dir, plugin.Name, $"{plugin.Name}.dll");
+                var pluginPath = Path.Combine(dir, $"{plugin.Name}.dll");
+                if (!File.Exists(pluginPath))
+                {
+                    continue;
+                }
+                //var handle = Activator.CreateInstance(pluginPath, plugin.Type);
+                var handle = Activator.CreateInstanceFrom(pluginPath, plugin.Type);
                 if (handle == null)
                 {
                     Console.WriteLine($"createInstance failed, name = {plugin.Name}");
@@ -48,11 +65,11 @@ namespace PluginCore
         }
         public void Run()
         {
-            foreach(var p in _plugins)
+            foreach (var p in _plugins)
             {
                 p.Init();
             }
-            foreach(var p in _plugins)
+            foreach (var p in _plugins)
             {
                 p.Start();
             }
@@ -60,7 +77,7 @@ namespace PluginCore
 
         public void Dispose()
         {
-            foreach(var p in _plugins)
+            foreach (var p in _plugins)
             {
                 p.Dispose();
             }

@@ -15,17 +15,17 @@ namespace PluginCore
     }
     public class PluginDesc
     {
-        public string Name;
-        public string Description;
+        public string Name { get; set; }
+        public string Description { get; set; }
         /// <summary>
         /// 通过反射创建类
         /// </summary>
-        public string Type;
+        public string Type { get; set; }
         public readonly List<string> Dependencies = new List<string>();
         public PluginThread Thread { get; set; }
     }
     public class PluginDescFile
     {
-        public readonly List<PluginDesc> Plugins = new List<PluginDesc>();
+        public List<PluginDesc> Plugins { get; set; }
     }
 }
