@@ -1,2 +1,6 @@
 /.vs/
 /AppFrameworkCSharp/obj/
+/AppFrameworkCSharp/bin/
+/Pipeline/bin/
+/Pipeline/obj/
+/PluginCore/obj/

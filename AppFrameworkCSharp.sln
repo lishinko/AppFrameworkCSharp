@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppFrameworkCSharp", "AppFrameworkCSharp\AppFrameworkCSharp.csproj", "{8EAA94D3-B070-4F45-B09D-E742A5083F9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppFrameworkCSharp", "AppFrameworkCSharp\AppFrameworkCSharp.csproj", "{8EAA94D3-B070-4F45-B09D-E742A5083F9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pipeline", "Pipeline\Pipeline.csproj", "{6C1E4D65-EAAD-4931-BCD3-D2B57ADAF2CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginCore", "PluginCore\PluginCore.csproj", "{0F35B310-6697-43CC-8D96-633D2ED1CCC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{8EAA94D3-B070-4F45-B09D-E742A5083F9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EAA94D3-B070-4F45-B09D-E742A5083F9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EAA94D3-B070-4F45-B09D-E742A5083F9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C1E4D65-EAAD-4931-BCD3-D2B57ADAF2CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C1E4D65-EAAD-4931-BCD3-D2B57ADAF2CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C1E4D65-EAAD-4931-BCD3-D2B57ADAF2CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C1E4D65-EAAD-4931-BCD3-D2B57ADAF2CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F35B310-6697-43CC-8D96-633D2ED1CCC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F35B310-6697-43CC-8D96-633D2ED1CCC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F35B310-6697-43CC-8D96-633D2ED1CCC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F35B310-6697-43CC-8D96-633D2ED1CCC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

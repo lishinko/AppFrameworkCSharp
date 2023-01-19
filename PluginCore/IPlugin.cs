@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppFrameworkCSharp.src
+namespace PluginCore
 {
-    internal interface IPlugin : IDisposable
+    public interface IPlugin : IDisposable
     {
+        public string Name { get; }
         List<IPlugin> Dependencies { get; }
         void Init();
         void Start();
@@ -15,6 +16,8 @@ namespace AppFrameworkCSharp.src
     }
     public abstract class PluginBase : IPlugin
     {
+        public string Name => throw new NotImplementedException();
+
         List<IPlugin> IPlugin.Dependencies => throw new NotImplementedException();
 
         public void Dispose()
