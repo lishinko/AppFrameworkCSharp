@@ -46,7 +46,7 @@ namespace PluginCore
                     continue;
                 }
                 //var handle = Activator.CreateInstance(pluginPath, plugin.Type);
-                var handle = Activator.CreateInstanceFrom(pluginPath, plugin.Type, false, System.Reflection.BindingFlags.Public, null, new object[] { plugin }, null, null); ;
+                var handle = Activator.CreateInstanceFrom(pluginPath, plugin.Type, false, System.Reflection.BindingFlags.Default, null, new object[] { plugin }, null, null); ;
                 if (handle == null)
                 {
                     Console.WriteLine($"createInstance failed, name = {plugin.Name}");
