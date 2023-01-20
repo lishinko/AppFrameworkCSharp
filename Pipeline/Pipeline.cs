@@ -13,18 +13,20 @@ namespace Pipeline
     }
     public class Pipeline : IPipeline
     {
+        public Pipeline(PluginDesc desc)
+        {
+            Console.WriteLine("ctor");
+            _desc = desc;
+        }
         public string Name => "流水线引擎,插件集成测试";
 
-        public List<IPlugin> Dependencies => new List<IPlugin>();
+        public List<IPlugin> Dependencies => _dependencies;
+
+        public PluginDesc Desc => _desc;
 
         public void Dispose()
         {
             Console.WriteLine(nameof(Dispose));
-        }
-
-        public void Init()
-        {
-            Console.WriteLine("init");
         }
 
         public void Start()
@@ -36,5 +38,13 @@ namespace Pipeline
         {
             Console.WriteLine(nameof(Stop));
         }
+
+        public void Init(List<IPlugin> dependencies)
+        {
+            _dependencies.AddRange(dependencies);
+        }
+
+        private PluginDesc _desc;
+        private readonly List<IPlugin> _dependencies = new List<IPlugin>();
     }
 }

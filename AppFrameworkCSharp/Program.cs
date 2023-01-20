@@ -9,6 +9,7 @@ namespace AppFrameworkCSharp
             Console.WriteLine("Hello, World!");
             using PluginManager manager = new PluginManager();
             manager.LoadPlugins();
+            manager.Run();
         }
     }
 }

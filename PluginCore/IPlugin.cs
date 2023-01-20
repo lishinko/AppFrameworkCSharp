@@ -8,37 +8,12 @@ namespace PluginCore
 {
     public interface IPlugin : IDisposable
     {
-        public string Name { get; }
+        string Name => Desc.Name;
         List<IPlugin> Dependencies { get; }
-        void Init();
+        void Init(List<IPlugin> dependencies);
         void Start();
         void Stop();
-    }
-    public abstract class PluginBase : IPlugin
-    {
-        public string Name => throw new NotImplementedException();
-
-        List<IPlugin> IPlugin.Dependencies => throw new NotImplementedException();
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Init()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Start()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Stop()
-        {
-            throw new NotImplementedException();
-        }
+        PluginDesc Desc { get; }
     }
 
 }

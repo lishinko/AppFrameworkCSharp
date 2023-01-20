@@ -46,7 +46,7 @@ namespace PluginCore
                     continue;
                 }
                 //var handle = Activator.CreateInstance(pluginPath, plugin.Type);
-                var handle = Activator.CreateInstanceFrom(pluginPath, plugin.Type);
+                var handle = Activator.CreateInstanceFrom(pluginPath, plugin.Type, false, System.Reflection.BindingFlags.Public, null, new object[] { plugin }, null, null); ;
                 if (handle == null)
                 {
                     Console.WriteLine($"createInstance failed, name = {plugin.Name}");
@@ -65,9 +65,11 @@ namespace PluginCore
         }
         public void Run()
         {
+            var list = BuildDependencies();
             foreach (var p in _plugins)
             {
-                p.Init();
+                var d = list[p];
+                p.Init(d ?? new List<IPlugin>());
             }
             foreach (var p in _plugins)
             {
@@ -83,7 +85,52 @@ namespace PluginCore
             }
             _plugins.Clear();
         }
+        /// <summary>
+        /// 添加依赖项,这里没有检查依赖项是否循环
+        /// </summary>
+        private Dictionary<IPlugin, List<IPlugin>?> BuildDependencies()
+        {
+            Dictionary<IPlugin, List<IPlugin>?> plugins = new Dictionary<IPlugin, List<IPlugin>?>();
+            foreach (var p in _plugins)
+            {
+                if (p.Desc.Dependencies.Count <= 0)
+                {
+                    plugins.Add(p, null);
+                }
+            }
+            for (int loopGuard = 0; plugins.Count < _plugins.Count && loopGuard < 1000; loopGuard++)
+            {
+                foreach (var p in _plugins)
+                {
+                    if (plugins.ContainsKey(p))
+                    {
+                        continue;
+                    }
+                    var deps = new List<IPlugin>();
+                    foreach (var s in p.Desc.Dependencies)
+                    {
+                        foreach (var dep in plugins.Keys)
+                        {
+                            if (dep != p && s == dep.Name && !deps.Contains(dep))
+                            {
+                                deps.Add(dep);
+                            }
+                        }
+                    }
+                    if (deps.Count >= p.Desc.Dependencies.Count)
+                    {
+                        plugins.Add(p, deps);
+                    }
+                }
+            }
+            if (plugins.Count < _plugins.Count)
+            {
+                throw new InvalidDataException($"create dependencies failed, maybe there is circular dependencies!");
+            }
+            return plugins;
+        }
 
         private readonly List<IPlugin> _plugins = new List<IPlugin>();
+        private readonly ThreadManager _threadManager = new ThreadManager();
     }
 }
