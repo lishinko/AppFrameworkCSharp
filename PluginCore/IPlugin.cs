@@ -15,5 +15,12 @@ namespace PluginCore
         void Stop();
         PluginDesc Desc { get; }
     }
+    /// <summary>
+    /// 支持tick(引擎决定的统一时钟)
+    /// </summary>
+    public interface ITickablePlugin : IPlugin
+    {
+        void Tick(float deltaTime);
+    }
 
 }
