@@ -13,12 +13,29 @@ namespace Pipeline
     }
     public interface IPipelineNode : ITickablePlugin
     {
-        public State TickResult { get; }
+        State TickResult { get; }
     }
+    /// <summary>
+    /// pipeline中间节点
+    /// </summary>
+    /// <typeparam name="TInput"></typeparam>
+    /// <typeparam name="TOutput"></typeparam>
     public interface IPipelineNode<TInput, TOutput> : IPipelineNode
     {
-        public TOutput Result { get; }
-        public TInput Input { get; }
+        TOutput Output { get; }
+        TInput Input { get; }
+    }
+    /// <summary>
+    /// pipeline输出节点
+    /// </summary>
+    /// <typeparam name="TOutput"></typeparam>
+    public interface IPipelineNodeSink<TOutput> : IPipelineNode
+    {
+        TOutput Output { get; }
+    }
+    public interface IPipelineNodeSource<TInput> : IPipelineNode
+    {
+        TInput Input { get; }
     }
     public interface IPipeline : ITickablePlugin
     {
