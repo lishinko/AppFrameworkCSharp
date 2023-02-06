@@ -1,0 +1,5 @@
+GetWindowRect
+PrintWindow
+CreateRectRgn
+GetWindowRgn
+GetModuleHandle
