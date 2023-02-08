@@ -55,7 +55,7 @@ namespace Pipeline
 
         public List<IPlugin> Dependencies => _dependencies;
 
-        public PluginDesc Desc => _desc;
+        public PluginDesc Desc { get { return _desc; } set { _desc = value; } }
 
         public void Dispose()
         {

@@ -10,13 +10,17 @@ namespace WindowCapture
     public class CaptureResult
     {
     }
-    public class WindowCapture
+    public class WindowCapture : ICommandLinePlugin
     {
-        public CaptureResult Output => throw new NotImplementedException();
+        public CaptureResult? Output => null;
+
+        public List<IPlugin>? Dependencies => _dependencies;
+
+        public PluginDesc Desc { get { return _desc; } set { _desc = value; } }
+
+        public string[] CommandLine { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public string TargetName = string.Empty;
-        public void Init()
-        {
-        }
         public void Start()
         {
             if (!int.TryParse(TargetName, out int id))
@@ -60,5 +64,21 @@ namespace WindowCapture
             //PInvoke.GetWindowRect(handle, )
         }
 
+        public void Init(List<IPlugin>? dependencies)
+        {
+            _dependencies = dependencies;
+        }
+
+        public void Stop()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+        private List<IPlugin> _dependencies;
+        private PluginDesc _desc;
     }
 }

@@ -10,6 +10,40 @@ namespace PluginCore
 {
     public class PluginManager : IDisposable
     {
+        public static T? LoadJson<T>(string fileRelativePath) where T : class
+        {
+            var processPath = System.Environment.ProcessPath;
+            var dir = Path.GetDirectoryName(processPath);
+            if (dir == null)
+            {
+                Console.WriteLine("no path found!");
+                return null;
+            }
+            var jsonPath = System.IO.Path.Combine(dir, fileRelativePath);
+            var str = System.IO.File.ReadAllText(jsonPath);
+            var options = new System.Text.Json.JsonSerializerOptions
+            {
+                Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
+            };
+            var json = System.Text.Json.JsonSerializer.Deserialize<T>(str, options);
+            if (json == null)
+            {
+                Console.WriteLine("plugin json failed");
+                return null;
+            }
+            return json;
+        }
+        public IPlugin? GetPlugin(string name)
+        {
+            foreach (var p in _plugins)
+            {
+                if (p.Name == name)
+                {
+                    return p;
+                }
+            }
+            return null;
+        }
         public void LoadPlugins()
         {
             var processPath = System.Environment.ProcessPath;
@@ -19,18 +53,13 @@ namespace PluginCore
                 Console.WriteLine("no path found!");
                 return;
             }
-            var jsonPath = System.IO.Path.Combine(dir, "plugins.json");
-            var str = System.IO.File.ReadAllText(jsonPath);
-            var options = new System.Text.Json.JsonSerializerOptions
-            {
-                Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
-            };
-            var json = System.Text.Json.JsonSerializer.Deserialize<PluginDescFile>(str, options);
+            var json = LoadJson<PluginDescFile>("plugins.json");
             if (json == null)
             {
                 Console.WriteLine("plugin json failed");
                 return;
             }
+
             var plugins = json.Plugins;
             if (plugins == null)
             {
@@ -59,6 +88,7 @@ namespace PluginCore
                     continue;
                 }
                 var p = (IPlugin)obj;
+                p.Desc = plugin;
                 Console.WriteLine($"found plugin p {p.Name}");
                 _plugins.Add(p);
             }
@@ -69,7 +99,7 @@ namespace PluginCore
             foreach (var p in _plugins)
             {
                 var d = list[p];
-                p.Init(d ?? new List<IPlugin>());
+                p.Init(d);
             }
             foreach (var p in _plugins)
             {

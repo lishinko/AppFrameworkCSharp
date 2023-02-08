@@ -9,11 +9,11 @@ namespace PluginCore
     public interface IPlugin : IDisposable
     {
         string Name => Desc.Name;
-        List<IPlugin> Dependencies { get; }
-        void Init(List<IPlugin> dependencies);
+        List<IPlugin>? Dependencies { get; }
+        void Init(List<IPlugin>? dependencies);
         void Start();
         void Stop();
-        PluginDesc Desc { get; }
+        PluginDesc Desc { get; set; }
     }
     /// <summary>
     /// 支持tick(引擎决定的统一时钟)
@@ -21,6 +21,10 @@ namespace PluginCore
     public interface ITickablePlugin : IPlugin
     {
         void Tick(float deltaTime);
+    }
+    public interface ICommandLinePlugin : IPlugin
+    {
+        public string[] CommandLine { get; set; }
     }
 
 }
