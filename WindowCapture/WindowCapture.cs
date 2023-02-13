@@ -1,6 +1,7 @@
 ﻿using Pipeline;
 using PluginCore;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using Windows.Win32;
@@ -12,17 +13,35 @@ namespace WindowCapture
     }
     public class WindowCapture : ICommandLinePlugin
     {
+        public WindowCapture(PluginDesc desc)
+        {
+            Desc = desc;
+        }
         public CaptureResult? Output => null;
 
         public List<IPlugin>? Dependencies => _dependencies;
 
         public PluginDesc Desc { get { return _desc; } set { _desc = value; } }
 
-        public string[] CommandLine { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string[] CommandLine { get; set; }
 
         public string TargetName = string.Empty;
         public void Start()
         {
+            //Console.WriteLine("please input process id");
+            //var idStr = Console.ReadLine();
+            //if (string.IsNullOrEmpty(idStr))
+            //{
+            //    Console.WriteLine($"no id !!!");
+            //    return;
+            //}
+            //TargetName = idStr;
+            if(CommandLine == null ||string.IsNullOrEmpty( CommandLine[0]))
+            {
+                Console.WriteLine("no command line!");
+                return;
+            }
+            TargetName = CommandLine[0];
             if (!int.TryParse(TargetName, out int id))
             {
                 return;
@@ -71,12 +90,11 @@ namespace WindowCapture
 
         public void Stop()
         {
-            throw new NotImplementedException();
+            Console.WriteLine($"stopping, name = {nameof(WindowCapture)}");
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
         }
         private List<IPlugin> _dependencies;
         private PluginDesc _desc;

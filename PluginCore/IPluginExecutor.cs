@@ -12,6 +12,38 @@ namespace PluginCore
         void Start();
         void Stop();
     }
+    public class NormalExecutor : IPluginExecutor
+    {
+        public void Build(IPlugin plugin)
+        {
+            _plugin = plugin;
+        }
+        public void Build(PluginManager manager)
+        {
+        }
+
+        public void Dispose()
+        {
+            if (_plugin != null)
+            {
+                _plugin.Dispose();
+                _plugin = null;
+            }
+        }
+
+        public void Start()
+        {
+            if (_plugin != null)
+                _plugin.Start();
+        }
+
+        public void Stop()
+        {
+            if (_plugin != null)
+                _plugin.Stop();
+        }
+        private IPlugin? _plugin;
+    }
     public interface ICommandLineExecutor : IPluginExecutor
     {
         void BuildFile(string runtimeFile);
@@ -45,6 +77,7 @@ namespace PluginCore
                 _exe = commands[0];
                 _args = commands[1..];
             }
+            plugin.CommandLine = _args;
         }
         public void Dispose()
         {
@@ -53,10 +86,11 @@ namespace PluginCore
 
         public void Start()
         {
-            if(_exe == null)
+            if (_exe == null)
             {
                 return;
             }
+            Console.WriteLine($"start commandline, exe = {_exe}, args = {_args}");
             var process = System.Diagnostics.Process.Start(_exe, _args);
             process.Start();
             process.WaitForExit();

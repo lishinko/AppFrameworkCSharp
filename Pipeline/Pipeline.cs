@@ -120,8 +120,12 @@ namespace Pipeline
             Console.WriteLine(nameof(Stop));
         }
 
-        public void Init(List<IPlugin> dependencies)
+        public void Init(List<IPlugin>? dependencies)
         {
+            if(dependencies == null)
+            {
+                return;
+            }
             _dependencies.AddRange(dependencies);
         }
 
