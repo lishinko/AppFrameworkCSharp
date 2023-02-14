@@ -20,11 +20,11 @@ namespace AppFrameworkCSharp
                 Console.WriteLine($"no id !!!");
                 return;
             }
-            var c = new WindowCapture.WindowCapture();
-            c.CommandLine = new[] { idStr }; 
-            executor.Build(c);
-            //executor.BuildFile("cmd.json");
-            executor.Start();
+            //var c = new WindowCapture.WindowCapture();
+            //c.CommandLine = new[] { idStr }; 
+            //executor.Build(c);
+            ////executor.BuildFile("cmd.json");
+            //executor.Start();
             manager.Run();
         }
     }
